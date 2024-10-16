@@ -1,3 +1,3 @@
-# cpd_2024_todo
+# CPD_2024_TODO
 
-A new Flutter project.
+Cross Plattform Development: Simple To Do List App

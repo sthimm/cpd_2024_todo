@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'models/task_manager.dart';
+import 'screens/home_screen.dart';
+// import 'screens/form_screen.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => TaskManager(),
+    child: const ToDoListApp(),
+  ));
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class ToDoListApp extends StatelessWidget {
+  const ToDoListApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      title: 'To Do List App',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomeScreen(),
+        // '/add': (context) => const FormScreen(),
+      },
     );
   }
 }
