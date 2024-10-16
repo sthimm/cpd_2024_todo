@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'models/task_manager.dart';
 import 'screens/home_screen.dart';
-// import 'screens/form_screen.dart';
+import 'screens/form_screen.dart'; 
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -21,9 +21,10 @@ class ToDoListApp extends StatelessWidget {
       title: 'To Do List App',
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(),
-        // '/add': (context) => const FormScreen(),
+        '/': (context) => const HomeScreen(title: 'To Do List App'),
+        '/form': (context) => const FormScreen(title: 'Add a new task'),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -4,13 +4,15 @@ import 'package:provider/provider.dart';
 import '../models/task_manager.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('To Do List App'),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
@@ -28,10 +30,10 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          var taskmanager = context.read<TaskManager>();
-          taskmanager.increment();
+          // Switch to form to add a new task
+          Navigator.pushNamed(context, '/form');
         },
-        tooltip: 'Increment',
+        tooltip: 'Hinzufügen',
         child: const Icon(Icons.add),
       ),
     );
