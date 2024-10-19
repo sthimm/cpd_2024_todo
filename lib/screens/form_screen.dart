@@ -83,7 +83,7 @@ class _MyForm extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(width: 30),
                 MyElevatedButton(
                   text: 'Cancel',
                   onPressed: () {

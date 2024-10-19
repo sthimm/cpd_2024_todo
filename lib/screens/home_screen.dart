@@ -27,22 +27,33 @@ class MyHomePage extends StatelessWidget {
                   ),
                   itemCount: taskManager.tasks.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(taskManager.tasks[index].name),
-                      subtitle: Text(taskManager.tasks[index].description),
-                      leading: Checkbox(
-                        value: taskManager.tasks[index].status,
-                        onChanged: (bool? value) {
-                          taskManager
-                              .toggleTask(index); // Update the task's status
-                        },
+                    return Dismissible(
+                      key: Key(taskManager.tasks[index].name),
+                      onDismissed: (direction) {
+                        taskManager.removeTask(index);
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
                       ),
-                    );
+                      child: ListTile(
+                        title: Text(taskManager.tasks[index].name),
+                        subtitle: Text(taskManager.tasks[index].description),
+                        leading: Checkbox(
+                          value: taskManager.tasks[index].status,
+                          onChanged: (bool? value) {
+                            taskManager.toggleTask(index);
+                          },
+                        ),
+                      ),
+                    ); 
                   },
                 );
               },
             )),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             MyElevatedButton(
               text: 'Add a new task',
               onPressed: () {

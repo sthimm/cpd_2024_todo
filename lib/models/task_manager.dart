@@ -14,6 +14,11 @@ class TaskManager with ChangeNotifier {
     _tasks[index].toggleStatus();
     notifyListeners();
   }
+
+  void removeTask(int index) {
+    _tasks.removeAt(index);
+    notifyListeners();
+  }
 }
 
 class Task {
