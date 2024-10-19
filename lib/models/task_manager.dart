@@ -15,9 +15,11 @@ class TaskManager with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeTask(int index) {
+  Task removeTask(int index) {
+    Task task = _tasks[index];
     _tasks.removeAt(index);
     notifyListeners();
+    return task; 
   }
 }
 

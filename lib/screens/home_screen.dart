@@ -30,7 +30,12 @@ class MyHomePage extends StatelessWidget {
                     return Dismissible(
                       key: Key(taskManager.tasks[index].name),
                       onDismissed: (direction) {
-                        taskManager.removeTask(index);
+                        Task task = taskManager.removeTask(index);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${task.name} dismissed'),
+                          ),
+                        );
                       },
                       background: Container(
                         color: Colors.red,
