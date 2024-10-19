@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/task_manager.dart';
+import '../widgets/button_widget.dart'; 
 
 class MyFormPage extends StatelessWidget {
   final String title;
@@ -9,9 +10,6 @@ class MyFormPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String taskName = '';
-    String taskDescription = '';
-
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -51,6 +49,7 @@ class _MyForm extends StatelessWidget {
               taskName = value ?? '';
             },
           ),
+          const SizedBox(height: 30),
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Task description',
@@ -65,14 +64,15 @@ class _MyForm extends StatelessWidget {
               taskDescription = value ?? '';
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center, // Zentriert die Schaltflächen horizontal
               children: [
                 Consumer<TaskManager>(
                   builder: (context, taskManager, child) {
-                    return ElevatedButton(
+                    return MyElevatedButton(
+                      text: 'Save',
                       onPressed: () {
                         if (_formkey.currentState!.validate()) {
                           _formkey.currentState!.save();
@@ -80,17 +80,16 @@ class _MyForm extends StatelessWidget {
                           Navigator.pushNamed(context, '/');
                         }
                       },
-                      child: const Text('Save'),
                     );
                   },
                 ),
                 const SizedBox(width: 20),
-                ElevatedButton(
+                MyElevatedButton(
+                  text: 'Cancel',
                   onPressed: () {
                     Navigator.pushNamed(context, '/');
                   },
-                  child: const Text('Cancel'),
-                ),
+                )
               ],
             ),
           ),
