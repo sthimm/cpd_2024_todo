@@ -40,7 +40,10 @@ class _MyListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TaskManager>(
       builder: (context, taskManager, child) {
-        return ListView.builder(
+        return ListView.separated(
+          separatorBuilder: (context, index) => Divider(
+            color: Theme.of(context).colorScheme.primary,
+          ),
           itemCount: taskManager.tasks.length,
           itemBuilder: (context, index) {
             return ListTile(
@@ -48,14 +51,15 @@ class _MyListView extends StatelessWidget {
               subtitle: Text(taskManager.tasks[index].description),
               leading: Checkbox(
                 value: taskManager.tasks[index].status,
-                onChanged: (value) {
-                  taskManager.tasks[index].toggleStatus();
+                onChanged: (bool? value) {
+                  taskManager.toggleTask(index); // Update the task's status
                 },
               ),
-            );
+            ); 
           },
         );
       },
     );
   }
 }
+

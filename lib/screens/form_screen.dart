@@ -14,7 +14,7 @@ class MyFormPage extends StatelessWidget {
         title: Text(title),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0), 
+        padding: const EdgeInsets.all(32.0), 
         child: _MyForm(),
       ),
       floatingActionButton: FloatingActionButton(
@@ -32,11 +32,11 @@ class MyFormPage extends StatelessWidget {
 class _MyForm extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
 
-  String _taskName = ''; 
-  String _taskDescription = ''; 
-
   @override
   Widget build(BuildContext context) {
+    String taskName = '';
+    String taskDescription = '';
+
     return Form(
       key: _formkey,
       child: Column(
@@ -45,25 +45,27 @@ class _MyForm extends StatelessWidget {
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Task name',
+              hintText: 'Enter a task name',
             ),
             validator: (String? value) {
               return (value == null || value.trim().isEmpty) ? 
                 'Please enter a task name' : null;
             },
             onSaved: (String? value) {
-              _taskName = value ?? '';
+              taskName = value ?? '';
             },
           ), 
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Task description',
+              hintText: 'Enter a task description',
             ),
             validator: (String? value) {
               return (value == null || value.trim().isEmpty) ? 
                 'Please enter a task description' : null;
             },
             onSaved: (String? value) {
-              _taskDescription = value ?? '';
+              taskDescription = value ?? '';
             },
           ),
           const SizedBox(height: 20), 
@@ -73,7 +75,7 @@ class _MyForm extends StatelessWidget {
                 onPressed: () {
                   if (_formkey.currentState!.validate()) {
                     _formkey.currentState!.save();
-                    taskManager.addTask(Task(_taskName, _taskDescription));
+                    taskManager.addTask(Task(taskName, taskDescription));
                     Navigator.pushNamed(context, '/');
                   }
                 },

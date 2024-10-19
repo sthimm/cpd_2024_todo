@@ -9,6 +9,11 @@ class TaskManager with ChangeNotifier {
     _tasks.add(task);
     notifyListeners();
   }
+  
+  void toggleTask(int index) {
+    _tasks[index].toggleStatus();
+    notifyListeners();
+  }
 }
 
 class Task {
