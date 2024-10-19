@@ -11,7 +11,7 @@ Anforderungen:
     * (Priorität Aufgabe) 
     * Status Aufgabe X
 * Integration einer Eingabemaske X
-* Integration Detailansicht zu Aufgaben 
+* Integration Detailansicht zu Aufgaben X
 * Sortieren der Aufgaben nach: 
     * Dringlichkeit 
     * Priorität 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter/cupertino.dart'; 
 import 'package:provider/provider.dart';
 import '../models/task_manager.dart';
 import '../widgets/button_widget.dart'; 
@@ -29,6 +30,7 @@ class _MyForm extends StatelessWidget {
   Widget build(BuildContext context) {
     String taskName = '';
     String taskDescription = '';
+    // DateTime? taskDeadline;
 
     return Form(
       key: _formkey,
@@ -37,7 +39,7 @@ class _MyForm extends StatelessWidget {
         children: <Widget>[
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Task name',
+              labelText: 'Name',
               hintText: 'Enter a task name',
             ),
             validator: (String? value) {
@@ -52,7 +54,7 @@ class _MyForm extends StatelessWidget {
           const SizedBox(height: 30),
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Task description',
+              labelText: 'Description',
               hintText: 'Enter a task description',
             ),
             validator: (String? value) {
@@ -62,6 +64,18 @@ class _MyForm extends StatelessWidget {
             },
             onSaved: (String? value) {
               taskDescription = value ?? '';
+            },
+          ),
+          const SizedBox(height: 30),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Deadline', 
+              hintText: 'Enter a task deadline',
+            ),
+            validator: (String? value) {
+              return (value == null || value.trim().isEmpty)
+                  ? 'Please enter a task deadline'
+                  : null;
             },
           ),
           const SizedBox(height: 30),
@@ -97,5 +111,34 @@ class _MyForm extends StatelessWidget {
       ),
     );
   }
+
+  // void _selectDateTime(BuildContext context, DateTime? taskDeadline) {
+  //   showCupertinoModalPopup(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Container(
+  //         height: 300,
+  //         color: Colors.white,
+  //         child: Column(
+  //           children: [
+  //             Container(
+  //               height: 250,
+  //               child: CupertinoDatePicker(
+  //                 mode: CupertinoDatePickerMode.dateAndTime,
+  //                 initialDateTime: taskDeadline ?? DateTime.now(),
+  //               ),
+  //             ),
+  //             CupertinoButton(
+  //               child: Text('Bestätigen'),
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }
 
