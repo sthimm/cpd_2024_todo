@@ -33,26 +33,62 @@ class MyHomePage extends StatelessWidget {
                         Task task = taskManager.removeTask(index);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('${task.name} dismissed'),
+                            content: Text('${task.name} deleted'),
+                            duration: const Duration(seconds: 1),
                           ),
                         );
                       },
                       background: Container(
-                        color: Colors.red,
+                        color: Theme.of(context).colorScheme.error,
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.only(right: 20),
                         child: const Icon(Icons.delete, color: Colors.white),
                       ),
-                      child: ListTile(
-                        title: Text(taskManager.tasks[index].name),
-                        subtitle: Text(taskManager.tasks[index].description),
-                        leading: Checkbox(
-                          value: taskManager.tasks[index].status,
-                          onChanged: (bool? value) {
-                            taskManager.toggleTask(index);
-                          },
-                        ),
-                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          taskManager.toggleTask(index);
+                        },
+                        onDoubleTap: () {
+                          _showTaskInfoDialog(context, taskManager.tasks[index]);
+                        },
+                        child: ListTile(
+                          title: Text(taskManager.tasks[index].name),
+                          subtitle: Text(taskManager.tasks[index].description),
+                          leading: Checkbox(
+                            value: taskManager.tasks[index].status,
+                            onChanged: (bool? value) {
+                              taskManager.toggleTask(index);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    taskManager.tasks[index].status
+                                        ? '${taskManager.tasks[index].name} done'
+                                        : '${taskManager.tasks[index].name} to be done',
+                                  ),
+                                  duration: const Duration(seconds: 1),
+                                ),
+                              );
+                            },
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.info),
+                                onPressed: () {
+                                  _showTaskInfoDialog(context, taskManager.tasks[index]);
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  taskManager.removeTask(index);
+                                },
+                              ),
+                            ],
+                          ),
+                        ), 
+                      ), 
                     ); 
                   },
                 );
@@ -68,6 +104,26 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showTaskInfoDialog(BuildContext context, Task task) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Secondary Action'),
+          content: Text('You triggered a secondary action for: ${task.name}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Schließt den Dialog
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
