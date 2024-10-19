@@ -38,4 +38,11 @@ class Task {
     _status = !_status; 
   }
 
+  Map<String, dynamic> getInfo() {
+    return {
+      'Name': _name,
+      'Description': _description,
+      'Status': _status ? 'Done' : 'Open',
+    };
+  }
 }

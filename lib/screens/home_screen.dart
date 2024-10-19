@@ -53,7 +53,6 @@ class MyHomePage extends StatelessWidget {
                         },
                         child: ListTile(
                           title: Text(taskManager.tasks[index].name),
-                          subtitle: Text(taskManager.tasks[index].description),
                           leading: Checkbox(
                             value: taskManager.tasks[index].status,
                             onChanged: (bool? value) {
@@ -82,7 +81,13 @@ class MyHomePage extends StatelessWidget {
                               IconButton(
                                 icon: const Icon(Icons.delete),
                                 onPressed: () {
-                                  taskManager.removeTask(index);
+                                  Task task = taskManager.removeTask(index);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('${task.name} deleted'),
+                                      duration: const Duration(seconds: 1),
+                                    ),
+                                  );
                                 },
                               ),
                             ],
@@ -108,49 +113,34 @@ class MyHomePage extends StatelessWidget {
   }
 
   void _showTaskInfoDialog(BuildContext context, Task task) {
+    Map<String, dynamic> taskInfo = task.getInfo(); // Aufruf der getInfo-Methode
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Task Details'),
-          content: SizedBox(
-            width: double.maxFinite, // Damit die Breite angepasst wird
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // Minimale Höhe
-              crossAxisAlignment: CrossAxisAlignment.start, // Links ausrichten
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0), // Abstand unten
-                  child: Text(
-                    'Name:',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Minimale Höhe für den Dialog
+            crossAxisAlignment: CrossAxisAlignment.start, // Ausrichtung links
+            children: taskInfo.entries.map((entry) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // Ausrichtung links
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0), // Abstand unten
+                    child: Text(
+                      '${entry.key}:',
+                      style: const TextStyle(fontWeight: FontWeight.bold), // Fettdruck für den Schlüssel
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0), // Abstand unten
-                  child: Text(task.name),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0), // Abstand unten
-                  child: Text(
-                    'Description:',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0), // Abstand unten
+                    child: Text(entry.value.toString()), // Wert als Text
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0), // Abstand unten
-                  child: Text(task.description),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0), // Abstand unten
-                  child: Text(
-                    'Status:',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Text(task.status ? 'Done' : 'To be done'),
-              ],
-            ),
+                ],
+              );
+            }).toList(),
           ),
           actions: [
             TextButton(
@@ -164,6 +154,5 @@ class MyHomePage extends StatelessWidget {
       },
     );
   }
-
 
 }
