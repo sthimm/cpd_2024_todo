@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../models/task_manager.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.title});
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -17,13 +16,9 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Consumer<TaskManager>(
-              builder: (context, counter, child) => Text(
-                '${counter.value}',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
+          children: <Widget>[
+            Expanded(
+              child: _MyListView()
             ),
           ],
         ),
@@ -31,11 +26,36 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Switch to form to add a new task
-          Navigator.pushNamed(context, '/form');
+          Navigator.pushNamed(context, '/add-task');
         },
         tooltip: 'Hinzufügen',
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class _MyListView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<TaskManager>(
+      builder: (context, taskManager, child) {
+        return ListView.builder(
+          itemCount: taskManager.tasks.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(taskManager.tasks[index].name),
+              subtitle: Text(taskManager.tasks[index].description),
+              leading: Checkbox(
+                value: taskManager.tasks[index].status,
+                onChanged: (value) {
+                  taskManager.tasks[index].toggleStatus();
+                },
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
