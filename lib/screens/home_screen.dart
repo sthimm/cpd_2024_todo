@@ -112,18 +112,58 @@ class MyHomePage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Secondary Action'),
-          content: Text('You triggered a secondary action for: ${task.name}'),
+          title: const Text('Task Details'),
+          content: SizedBox(
+            width: double.maxFinite, // Damit die Breite angepasst wird
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Minimale Höhe
+              crossAxisAlignment: CrossAxisAlignment.start, // Links ausrichten
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0), // Abstand unten
+                  child: Text(
+                    'Name:',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0), // Abstand unten
+                  child: Text(task.name),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0), // Abstand unten
+                  child: Text(
+                    'Description:',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0), // Abstand unten
+                  child: Text(task.description),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0), // Abstand unten
+                  child: Text(
+                    'Status:',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Text(task.status ? 'Done' : 'To be done'),
+              ],
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Schließt den Dialog
               },
-              child: const Text('OK'),
+              child: const Text('Close'),
             ),
           ],
         );
       },
     );
   }
+
+
 }
