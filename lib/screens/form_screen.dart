@@ -7,16 +7,11 @@ import '../models/date_picker.dart';
 import '../widgets/button_widget.dart'; 
 
 class MyFormPage extends StatelessWidget {
-  final String title;
-
-  const MyFormPage({super.key, required this.title});
+  const MyFormPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
         child: _MyForm(),
@@ -27,19 +22,20 @@ class MyFormPage extends StatelessWidget {
 
 class _MyForm extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
+  final TextEditingController _taskNameController = TextEditingController();
+  final TextEditingController _taskDescriptionController = TextEditingController();
   final TextEditingController _taskDeadlineController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
-    String taskName = '';
-    String taskDescription = '';
-
     return Form(
       key: _formkey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           TextFormField(
+            controller: _taskNameController,
             decoration: const InputDecoration(
               labelText: 'Name',
               hintText: 'Enter a task name',
@@ -49,12 +45,10 @@ class _MyForm extends StatelessWidget {
                   ? 'Please enter a task name'
                   : null;
             },
-            onSaved: (String? value) {
-              taskName = value ?? '';
-            },
           ),
           const SizedBox(height: 30),
           TextFormField(
+            controller: _taskDescriptionController,
             decoration: const InputDecoration(
               labelText: 'Description',
               hintText: 'Enter a task description',
@@ -63,9 +57,6 @@ class _MyForm extends StatelessWidget {
               return (value == null || value.trim().isEmpty)
                   ? 'Please enter a task description'
                   : null;
-            },
-            onSaved: (String? value) {
-              taskDescription = value ?? '';
             },
           ),
           const SizedBox(height: 30),
@@ -92,7 +83,7 @@ class _MyForm extends StatelessWidget {
                       onPressed: () {
                         if (_formkey.currentState!.validate()) {
                           _formkey.currentState!.save();
-                          taskManager.addTask(Task(taskName, taskDescription, datePicker.selectedDate));
+                          taskManager.addTask(Task(_taskNameController.text, _taskDescriptionController.text, datePicker.selectedDate));
                           Navigator.pushNamed(context, '/');
                         }
                       },

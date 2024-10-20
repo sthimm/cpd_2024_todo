@@ -6,7 +6,7 @@ Anforderungen:
 
 * Erweiterung der GUI mit passenden Widgets
 * Erweiterung Datenmodell: 
-    * Deadline Aufgabe
+    * Deadline Aufgabe X 
     * Beschreibung Aufgabe X
     * (Priorität Aufgabe) 
     * Status Aufgabe X

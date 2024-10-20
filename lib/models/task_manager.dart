@@ -21,6 +21,17 @@ class MyTaskManager with ChangeNotifier {
     notifyListeners();
     return task; 
   }
+
+  void sortTasks(String sortType) {
+    switch (sortType) {
+      case 'Deadline':
+        _tasks.sort((a, b) => a.deadline!.compareTo(b.deadline!));
+        break;
+      case 'Status':
+        _tasks.sort((a, b) => a._status ? 1 : -1);
+    }
+    notifyListeners();
+  }
 }
 
 class Task {

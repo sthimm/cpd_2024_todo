@@ -1,18 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/task_manager.dart';
-import '../widgets/button_widget.dart'; 
+import '../widgets/button_widget.dart';
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        leading: Consumer<MyTaskManager>(
+          builder: (context, taskManager, child) {
+            return IconButton(
+              icon: const Icon(Icons.sort),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Sort Tasks'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            title: const Text('Sort by Deadline'),
+                            onTap: () {
+                              taskManager.sortTasks('Deadline');
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ListTile(
+                            title: const Text('Sort by Status'),
+                            onTap: () {
+                              taskManager.sortTasks('Status');
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -49,7 +82,8 @@ class MyHomePage extends StatelessWidget {
                           taskManager.toggleTask(index);
                         },
                         onDoubleTap: () {
-                          _showTaskInfoDialog(context, taskManager.tasks[index]);
+                          _showTaskInfoDialog(
+                              context, taskManager.tasks[index]);
                         },
                         child: ListTile(
                           title: Text(taskManager.tasks[index].name),
@@ -72,14 +106,35 @@ class MyHomePage extends StatelessWidget {
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    taskManager.tasks[index].deadline
+                                        .toString()
+                                        .substring(0, 10),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors
+                                            .grey), // Kleinere Schriftgröße und graue Farbe für das Datum
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                  width: 8), // Abstand zwischen Datum und Icons
                               IconButton(
                                 icon: const Icon(Icons.info),
+                                tooltip: 'Task Info',
                                 onPressed: () {
-                                  _showTaskInfoDialog(context, taskManager.tasks[index]);
+                                  _showTaskInfoDialog(
+                                      context, taskManager.tasks[index]);
                                 },
                               ),
+                              const SizedBox(
+                                  width: 8), // Abstand zwischen den Icons
                               IconButton(
                                 icon: const Icon(Icons.delete),
+                                tooltip: 'Delete Task',
                                 onPressed: () {
                                   Task task = taskManager.removeTask(index);
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -92,9 +147,9 @@ class MyHomePage extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ), 
-                      ), 
-                    ); 
+                        ),
+                      ),
+                    );
                   },
                 );
               },
@@ -113,7 +168,8 @@ class MyHomePage extends StatelessWidget {
   }
 
   void _showTaskInfoDialog(BuildContext context, Task task) {
-    Map<String, dynamic> taskInfo = task.getInfo(); // Aufruf der getInfo-Methode
+    Map<String, dynamic> taskInfo =
+        task.getInfo(); // Aufruf der getInfo-Methode
 
     showDialog(
       context: context,
@@ -125,17 +181,22 @@ class MyHomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start, // Ausrichtung links
             children: taskInfo.entries.map((entry) {
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.start, // Ausrichtung links
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Ausrichtung links
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0), // Abstand unten
+                    padding:
+                        const EdgeInsets.only(bottom: 8.0), // Abstand unten
                     child: Text(
                       '${entry.key}:',
-                      style: const TextStyle(fontWeight: FontWeight.bold), // Fettdruck für den Schlüssel
+                      style: const TextStyle(
+                          fontWeight:
+                              FontWeight.bold), // Fettdruck für den Schlüssel
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0), // Abstand unten
+                    padding:
+                        const EdgeInsets.only(bottom: 16.0), // Abstand unten
                     child: Text(entry.value.toString()), // Wert als Text
                   ),
                 ],
@@ -154,5 +215,4 @@ class MyHomePage extends StatelessWidget {
       },
     );
   }
-
 }

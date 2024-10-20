@@ -30,8 +30,8 @@ class ToDoListApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: 'To Do List App'),
-        '/add-task': (context) => const MyFormPage(title: 'Add a new task'),
+        '/': (context) => const MyHomePage(),
+        '/add-task': (context) => const MyFormPage(),
       },
       debugShowCheckedModeBanner: false,
     );
