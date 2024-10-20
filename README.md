@@ -8,7 +8,7 @@ Anforderungen:
 * Erweiterung Datenmodell: 
     * Deadline Aufgabe X 
     * Beschreibung Aufgabe X
-    * (Priorität Aufgabe) 
+    * Priorität Aufgabe X
     * Status Aufgabe X
 * Integration einer Eingabemaske X
 * Integration Detailansicht zu Aufgaben X
