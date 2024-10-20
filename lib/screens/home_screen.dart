@@ -75,7 +75,7 @@ class MyHomePage extends StatelessWidget {
                   itemCount: taskManager.tasks.length,
                   itemBuilder: (context, index) {
                     return Dismissible(
-                      key: Key(taskManager.tasks[index].name),
+                      key: Key(taskManager.getTask(index).name),
                       onDismissed: (direction) {
                         Task task = taskManager.removeTask(index);
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -97,20 +97,20 @@ class MyHomePage extends StatelessWidget {
                         },
                         onDoubleTap: () {
                           _showTaskInfoDialog(
-                              context, taskManager.tasks[index]);
+                              context, taskManager.getTask(index));
                         },
                         child: ListTile(
-                          title: Text(taskManager.tasks[index].name),
+                          title: Text(taskManager.getTask(index).name),
                           leading: Checkbox(
-                            value: taskManager.tasks[index].status,
+                            value: taskManager.getTask(index).status,
                             onChanged: (bool? value) {
                               taskManager.toggleTask(index);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    taskManager.tasks[index].status
-                                        ? '${taskManager.tasks[index].name} closed'
-                                        : '${taskManager.tasks[index].name} opened',
+                                    taskManager.getTask(index).status
+                                        ? '${taskManager.getTask(index).name} closed'
+                                        : '${taskManager.getTask(index).name} opened',
                                   ),
                                   duration: const Duration(seconds: 1),
                                 ),
@@ -121,10 +121,10 @@ class MyHomePage extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Tooltip(
-                                message: taskManager.tasks[index].priority ==
+                                message: taskManager.getTask(index).priority ==
                                         TaskPriority.high
                                     ? 'High Priority'
-                                    : taskManager.tasks[index].priority ==
+                                    : taskManager.getTask(index).priority ==
                                             TaskPriority.medium
                                         ? 'Medium Priority'
                                         : 'Low Priority',
@@ -133,10 +133,10 @@ class MyHomePage extends StatelessWidget {
                                   height: 12,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: (taskManager.tasks[index].priority ==
+                                    color: (taskManager.getTask(index).priority ==
                                             TaskPriority.high)
                                         ? Colors.red
-                                        : (taskManager.tasks[index].priority ==
+                                        : (taskManager.getTask(index).priority ==
                                                 TaskPriority.medium)
                                             ? Colors.orange
                                             : Colors.green,
@@ -150,7 +150,7 @@ class MyHomePage extends StatelessWidget {
                                   Tooltip(
                                     message: 'Deadline',
                                     child: Text(
-                                      taskManager.tasks[index].deadline
+                                      taskManager.getTask(index).deadline
                                           .toString()
                                           .substring(0, 10),
                                       style: const TextStyle(
@@ -168,7 +168,7 @@ class MyHomePage extends StatelessWidget {
                                 tooltip: 'Task Info',
                                 onPressed: () {
                                   _showTaskInfoDialog(
-                                      context, taskManager.tasks[index]);
+                                      context, taskManager.getTask(index));
                                 },
                               ),
                               const SizedBox(

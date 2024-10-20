@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class MyTaskManager with ChangeNotifier {
   final List<Task> _tasks = [];
+  List<Task> _sortedTasks = [];
   SortType _sortType = SortType.unsorted;
 
   SortType get sortType => _sortType;
@@ -9,33 +10,47 @@ class MyTaskManager with ChangeNotifier {
   set sortType(SortType newSortType) {
     if (_sortType != newSortType) {
       _sortType = newSortType;
-      notifyListeners(); // Notify listeners when sort type changes
+      _sortTasks(sortType); 
+      notifyListeners(); 
     }
   }
 
   List<Task> get tasks {
-    // Holen Sie sich die sortierten Aufgaben
-    return _sortTasks(_sortType);
+    return _sortType == SortType.unsorted ? _tasks : _sortedTasks;
   }
 
   void addTask(Task task) {
     _tasks.add(task);
+    _sortTasks(sortType);
     notifyListeners();
   }
   
   void toggleTask(int index) {
-    _tasks[index].toggleStatus();
+    if (_sortType == SortType.unsorted) {
+      _tasks[index].toggleStatus();
+    } else {
+      _sortedTasks[index].toggleStatus();
+    }
     notifyListeners();
   }
 
   Task removeTask(int index) {
-    Task task = _tasks[index];
-    _tasks.removeAt(index);
-    notifyListeners();
-    return task; 
+    Task removedTask = _sortType == SortType.unsorted ? _tasks.removeAt(index) : _sortedTasks.removeAt(index);
+    if (_sortType != SortType.unsorted) {
+      _tasks.remove(removedTask);
+    } else {
+      _sortedTasks.remove(removedTask);
+    }
+
+    notifyListeners(); 
+    return removedTask; 
   }
 
-  List<Task> _sortTasks(SortType sortType) {
+  Task getTask(int index) {
+    return _sortType == SortType.unsorted ? _tasks[index] : _sortedTasks[index];
+  }
+
+  void _sortTasks(SortType sortType) {
     List<Task> sortedTasks = List.from(_tasks); 
 
     switch (sortType) {
@@ -52,7 +67,7 @@ class MyTaskManager with ChangeNotifier {
       default:
         break;
     }
-    return sortedTasks; 
+    _sortedTasks = sortedTasks; 
   }
 }
 
