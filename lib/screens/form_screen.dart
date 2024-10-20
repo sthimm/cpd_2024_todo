@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/cupertino.dart'; 
 import 'package:provider/provider.dart';
 import '../models/task_manager.dart';
+import '../models/date_picker.dart';
 import '../widgets/button_widget.dart'; 
 
 class MyFormPage extends StatelessWidget {
@@ -25,12 +27,12 @@ class MyFormPage extends StatelessWidget {
 
 class _MyForm extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
+  final TextEditingController _taskDeadlineController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     String taskName = '';
     String taskDescription = '';
-    // DateTime? taskDeadline;
 
     return Form(
       key: _formkey,
@@ -68,22 +70,22 @@ class _MyForm extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           TextFormField(
+            controller: _taskDeadlineController,
             decoration: const InputDecoration(
-              labelText: 'Deadline', 
-              hintText: 'Enter a task deadline',
+              labelText: 'Deadline',
+              suffixIcon: Icon(Icons.calendar_today),
             ),
-            validator: (String? value) {
-              return (value == null || value.trim().isEmpty)
-                  ? 'Please enter a task deadline'
-                  : null;
-            },
+            readOnly: true, 
+            onTap: () {
+              _showDatePicker(context); 
+            }, 
           ),
           const SizedBox(height: 30),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center, // Zentriert die Schaltflächen horizontal
               children: [
-                Consumer<TaskManager>(
+                Consumer<MyTaskManager>(
                   builder: (context, taskManager, child) {
                     return MyElevatedButton(
                       text: 'Save',
@@ -112,33 +114,53 @@ class _MyForm extends StatelessWidget {
     );
   }
 
-  // void _selectDateTime(BuildContext context, DateTime? taskDeadline) {
-  //   showCupertinoModalPopup(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Container(
-  //         height: 300,
-  //         color: Colors.white,
-  //         child: Column(
-  //           children: [
-  //             Container(
-  //               height: 250,
-  //               child: CupertinoDatePicker(
-  //                 mode: CupertinoDatePickerMode.dateAndTime,
-  //                 initialDateTime: taskDeadline ?? DateTime.now(),
-  //               ),
-  //             ),
-  //             CupertinoButton(
-  //               child: Text('Bestätigen'),
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  void _showDatePicker(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return Consumer<MyDatePicker>(
+          builder: (context, datePicker, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CupertinoButton(
+                        child: const Text('Cancel'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      CupertinoButton(
+                        child: const Text('Done'),
+                        onPressed: () {
+                          _taskDeadlineController.text = datePicker.selectedDate.toString().substring(0, 10);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 200,
+                  child: CupertinoDatePicker(
+                    mode: CupertinoDatePickerMode.date,
+                    initialDateTime: datePicker.selectedDate,
+                    onDateTimeChanged: (DateTime newDate) {
+                      datePicker.selectDate(newDate);
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        ); 
+      },
+    ); 
+  }
+
 }
 

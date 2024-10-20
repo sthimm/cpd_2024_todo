@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class TaskManager with ChangeNotifier {
+class MyTaskManager with ChangeNotifier {
   final List<Task> _tasks = [];
 
   List<Task> get tasks => _tasks;
@@ -42,7 +42,7 @@ class Task {
     return {
       'Name': _name,
       'Description': _description,
-      'Status': _status ? 'Done' : 'Open',
+      'Status': _status ? 'Closed' : 'Open',
     };
   }
 }

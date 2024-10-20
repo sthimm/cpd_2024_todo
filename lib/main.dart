@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'models/task_manager.dart';
+import 'models/date_picker.dart'; 
 import 'screens/home_screen.dart';
 import 'screens/form_screen.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => TaskManager(),
-    child: const ToDoListApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => MyTaskManager()),
+        ChangeNotifierProvider(create: (context) => MyDatePicker()),
+      ],
+      child: const ToDoListApp(),
+    ),
+  );
 }
 
 class ToDoListApp extends StatelessWidget {

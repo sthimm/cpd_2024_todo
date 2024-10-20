@@ -19,7 +19,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(child: Consumer<TaskManager>(
+            Expanded(child: Consumer<MyTaskManager>(
               builder: (context, taskManager, child) {
                 return ListView.separated(
                   separatorBuilder: (context, index) => Divider(
@@ -61,8 +61,8 @@ class MyHomePage extends StatelessWidget {
                                 SnackBar(
                                   content: Text(
                                     taskManager.tasks[index].status
-                                        ? '${taskManager.tasks[index].name} done'
-                                        : '${taskManager.tasks[index].name} to be done',
+                                        ? '${taskManager.tasks[index].name} closed'
+                                        : '${taskManager.tasks[index].name} opened',
                                   ),
                                   duration: const Duration(seconds: 1),
                                 ),
