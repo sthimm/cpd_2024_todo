@@ -24,28 +24,48 @@ class MyHomePage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ListTile(
-                            title: const Text('Unsorted'),
+                            title: Text(
+                              'Unsorted',
+                              style: taskManager.sortType == SortType.unsorted
+                                  ? const TextStyle(fontWeight: FontWeight.bold)
+                                  : null,
+                            ),
                             onTap: () {
                               taskManager.sortType = SortType.unsorted;
                               Navigator.of(context).pop();
                             },
                           ),
                           ListTile(
-                            title: const Text('Sort by Deadline'),
+                            title: Text(
+                              'Sort by Deadline',
+                              style: taskManager.sortType == SortType.deadline
+                                  ? const TextStyle(fontWeight: FontWeight.bold)
+                                  : null,
+                            ),
                             onTap: () {
                               taskManager.sortType = SortType.deadline;
                               Navigator.of(context).pop();
                             },
                           ),
                           ListTile(
-                            title: const Text('Sort by Status'),
+                            title: Text(
+                              'Sort by Status',
+                              style: taskManager.sortType == SortType.status
+                                  ? const TextStyle(fontWeight: FontWeight.bold)
+                                  : null,
+                            ),
                             onTap: () {
                               taskManager.sortType = SortType.status;
                               Navigator.of(context).pop();
                             },
                           ),
                           ListTile(
-                            title: const Text('Sort by Priority'),
+                            title: Text(
+                              'Sort by Priority',
+                              style: taskManager.sortType == SortType.priority
+                                  ? const TextStyle(fontWeight: FontWeight.bold)
+                                  : null,
+                            ),
                             onTap: () {
                               taskManager.sortType = SortType.priority;
                               Navigator.of(context).pop();
@@ -133,13 +153,16 @@ class MyHomePage extends StatelessWidget {
                                   height: 12,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: (taskManager.getTask(index).priority ==
-                                            TaskPriority.high)
-                                        ? Colors.red
-                                        : (taskManager.getTask(index).priority ==
-                                                TaskPriority.medium)
-                                            ? Colors.orange
-                                            : Colors.green,
+                                    color:
+                                        (taskManager.getTask(index).priority ==
+                                                TaskPriority.high)
+                                            ? Colors.red
+                                            : (taskManager
+                                                        .getTask(index)
+                                                        .priority ==
+                                                    TaskPriority.medium)
+                                                ? Colors.orange
+                                                : Colors.green,
                                   ),
                                 ),
                               ),
@@ -150,7 +173,9 @@ class MyHomePage extends StatelessWidget {
                                   Tooltip(
                                     message: 'Deadline',
                                     child: Text(
-                                      taskManager.getTask(index).deadline
+                                      taskManager
+                                          .getTask(index)
+                                          .deadline
                                           .toString()
                                           .substring(0, 10),
                                       style: const TextStyle(
