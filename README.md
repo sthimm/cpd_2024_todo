@@ -18,7 +18,7 @@ Anforderungen:
     * Status X
 
 * Muss im Browser und Android funktionieren 
-* Darf keine Plattform-spezifischen Funktionen nutzen 
+* Darf keine Plattform-spezifischen Funktionen nutzen X
 * Verwendung Pakete: 
     * State Management mit Provider X
-    * Persistenz mit Shared_Preferences 
+    * Persistenz mit Shared_Preferences X
