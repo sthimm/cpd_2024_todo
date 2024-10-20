@@ -24,23 +24,30 @@ class MyHomePage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ListTile(
+                            title: const Text('Unsorted'),
+                            onTap: () {
+                              taskManager.sortType = SortType.unsorted;
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          ListTile(
                             title: const Text('Sort by Deadline'),
                             onTap: () {
-                              taskManager.sortTasks('Deadline');
+                              taskManager.sortType = SortType.deadline;
                               Navigator.of(context).pop();
                             },
                           ),
                           ListTile(
                             title: const Text('Sort by Status'),
                             onTap: () {
-                              taskManager.sortTasks('Status');
+                              taskManager.sortType = SortType.status;
                               Navigator.of(context).pop();
                             },
                           ),
                           ListTile(
                             title: const Text('Sort by Priority'),
                             onTap: () {
-                              taskManager.sortTasks('Priority');
+                              taskManager.sortType = SortType.priority;
                               Navigator.of(context).pop();
                             },
                           ),

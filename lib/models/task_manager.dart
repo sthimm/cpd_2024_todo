@@ -2,8 +2,21 @@ import 'package:flutter/foundation.dart';
 
 class MyTaskManager with ChangeNotifier {
   final List<Task> _tasks = [];
+  SortType _sortType = SortType.unsorted;
 
-  List<Task> get tasks => _tasks;
+  SortType get sortType => _sortType;
+
+  set sortType(SortType newSortType) {
+    if (_sortType != newSortType) {
+      _sortType = newSortType;
+      notifyListeners(); // Notify listeners when sort type changes
+    }
+  }
+
+  List<Task> get tasks {
+    // Holen Sie sich die sortierten Aufgaben
+    return _sortTasks(_sortType);
+  }
 
   void addTask(Task task) {
     _tasks.add(task);
@@ -22,19 +35,24 @@ class MyTaskManager with ChangeNotifier {
     return task; 
   }
 
-  void sortTasks(String sortType) {
+  List<Task> _sortTasks(SortType sortType) {
+    List<Task> sortedTasks = List.from(_tasks); 
+
     switch (sortType) {
-      case 'Deadline':
-        _tasks.sort((a, b) => a.deadline!.compareTo(b.deadline!));
+      case SortType.deadline:
+        sortedTasks.sort((a, b) => a.deadline.compareTo(b.deadline));
         break;
-      case 'Status':
-        _tasks.sort((a, b) => a._status ? 1 : -1);
+      case SortType.status:
+        sortedTasks.sort((a, b) => a.status ? 1 : -1); 
         break;
-      case 'Priority': 
-        _tasks.sort((a, b) => a.priority.index.compareTo(b.priority.index));
+      case SortType.priority:
+        sortedTasks.sort((a, b) => b.priority.index.compareTo(a.priority.index));
+        break;
+      case SortType.unsorted:
+      default:
         break;
     }
-    notifyListeners();
+    return sortedTasks; 
   }
 }
 
@@ -49,7 +67,7 @@ class Task {
 
   String get name => _name;
   String get description => _description;
-  DateTime? get deadline => _deadline;
+  DateTime get deadline => _deadline; // Deadline sollte nicht null sein
   TaskPriority get priority => _priority;
   bool get status => _status;
 
@@ -69,3 +87,4 @@ class Task {
 }
 
 enum TaskPriority { low, medium, high }
+enum SortType { unsorted, deadline, status, priority }

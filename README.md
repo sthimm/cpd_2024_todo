@@ -4,7 +4,7 @@ Cross Plattform Development: Simple To Do List App
 
 Anforderungen: 
 
-* Erweiterung der GUI mit passenden Widgets
+* Erweiterung der GUI mit passenden Widgets X
 * Erweiterung Datenmodell: 
     * Deadline Aufgabe X 
     * Beschreibung Aufgabe X
@@ -13,9 +13,9 @@ Anforderungen:
 * Integration einer Eingabemaske X
 * Integration Detailansicht zu Aufgaben X
 * Sortieren der Aufgaben nach: 
-    * Dringlichkeit 
-    * Priorität 
-    * Status
+    * Dringlichkeit X
+    * Priorität X
+    * Status X
 
 * Muss im Browser und Android funktionieren 
 * Darf keine Plattform-spezifischen Funktionen nutzen 
