@@ -26,9 +26,9 @@ class _MyForm extends StatelessWidget {
   final TextEditingController _taskDescriptionController = TextEditingController();
   final TextEditingController _taskDeadlineController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
+    TaskPriority taskPriority = TaskPriority.low;
     return Form(
       key: _formkey,
       child: Column(
@@ -60,6 +60,24 @@ class _MyForm extends StatelessWidget {
             },
           ),
           const SizedBox(height: 30),
+          DropdownButtonFormField(
+            decoration: const InputDecoration(
+              labelText: 'Priority',
+            ),
+            items: TaskPriority.values.map((TaskPriority priority) {
+              return DropdownMenuItem<TaskPriority>(
+              value: priority,
+              child: Text(priority.toString().split('.').last),
+              );
+            }).toList(),
+            onChanged: (TaskPriority? newValue) {
+              taskPriority = newValue!;
+            },
+            validator: (value) {
+              return (value == null) ? 'Please select a priority' : null;
+            },
+          ),
+          const SizedBox(height: 30),
           TextFormField(
             controller: _taskDeadlineController,
             decoration: const InputDecoration(
@@ -83,7 +101,7 @@ class _MyForm extends StatelessWidget {
                       onPressed: () {
                         if (_formkey.currentState!.validate()) {
                           _formkey.currentState!.save();
-                          taskManager.addTask(Task(_taskNameController.text, _taskDescriptionController.text, datePicker.selectedDate));
+                          taskManager.addTask(Task(_taskNameController.text, _taskDescriptionController.text, datePicker.selectedDate, taskPriority));
                           Navigator.pushNamed(context, '/');
                         }
                       },

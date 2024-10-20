@@ -37,6 +37,13 @@ class MyHomePage extends StatelessWidget {
                               Navigator.of(context).pop();
                             },
                           ),
+                          ListTile(
+                            title: const Text('Sort by Priority'),
+                            onTap: () {
+                              taskManager.sortTasks('Priority');
+                              Navigator.of(context).pop();
+                            },
+                          ),
                         ],
                       ),
                     );
@@ -106,17 +113,44 @@ class MyHomePage extends StatelessWidget {
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              Tooltip(
+                                message: taskManager.tasks[index].priority ==
+                                        TaskPriority.high
+                                    ? 'High Priority'
+                                    : taskManager.tasks[index].priority ==
+                                            TaskPriority.medium
+                                        ? 'Medium Priority'
+                                        : 'Low Priority',
+                                child: Container(
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: (taskManager.tasks[index].priority ==
+                                            TaskPriority.high)
+                                        ? Colors.red
+                                        : (taskManager.tasks[index].priority ==
+                                                TaskPriority.medium)
+                                            ? Colors.orange
+                                            : Colors.green,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    taskManager.tasks[index].deadline
-                                        .toString()
-                                        .substring(0, 10),
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        color: Colors
-                                            .grey), // Kleinere Schriftgröße und graue Farbe für das Datum
+                                  Tooltip(
+                                    message: 'Deadline',
+                                    child: Text(
+                                      taskManager.tasks[index].deadline
+                                          .toString()
+                                          .substring(0, 10),
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors
+                                              .grey), // Kleinere Schriftgröße und graue Farbe für das Datum
+                                    ),
                                   ),
                                 ],
                               ),
