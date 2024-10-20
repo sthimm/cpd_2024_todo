@@ -85,14 +85,14 @@ class _MyForm extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center, // Zentriert die Schaltflächen horizontal
               children: [
-                Consumer<MyTaskManager>(
-                  builder: (context, taskManager, child) {
+                Consumer2<MyTaskManager, MyDatePicker>(
+                  builder: (context, taskManager, datePicker, child) {
                     return MyElevatedButton(
                       text: 'Save',
                       onPressed: () {
                         if (_formkey.currentState!.validate()) {
                           _formkey.currentState!.save();
-                          taskManager.addTask(Task(taskName, taskDescription));
+                          taskManager.addTask(Task(taskName, taskDescription, datePicker.selectedDate));
                           Navigator.pushNamed(context, '/');
                         }
                       },
