@@ -7,19 +7,10 @@ class MyElevatedButton extends StatelessWidget {
   const MyElevatedButton({super.key, required this.text, required this.onPressed});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200, 
-      height: 50, 
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          textStyle: const TextStyle(
-            fontSize: 20,
-          )
-        ),
-        onPressed: () => onPressed(),
-        child: Text(text),
-      ),
+  Widget build(BuildContext context, ) {
+    return ElevatedButton(
+      onPressed: () => onPressed(),
+      child: Text(text),
     ); 
   }
 }

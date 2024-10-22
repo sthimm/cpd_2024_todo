@@ -82,7 +82,7 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -166,28 +166,25 @@ class MyHomePage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 8),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Tooltip(
-                                    message: 'Deadline',
-                                    child: Text(
-                                      taskManager
-                                          .getTask(index)
-                                          .deadline
-                                          .toString()
-                                          .substring(0, 10),
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: Colors
-                                              .grey), // Kleinere Schriftgröße und graue Farbe für das Datum
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                  width: 8), // Abstand zwischen Datum und Icons
+                              const SizedBox(width: 12),
+                              // Column(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: [
+                              //     Tooltip(
+                              //       message: 'Deadline',
+                              //       child: Text(
+                              //         taskManager
+                              //             .getTask(index)
+                              //             .deadline
+                              //             .toString()
+                              //             .substring(0, 10),
+                              //         style: const TextStyle(
+                              //             fontSize: 16, color: Colors.grey),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                              // const SizedBox(width: 4),
                               IconButton(
                                 icon: const Icon(Icons.info),
                                 tooltip: 'Task Info',
@@ -196,8 +193,7 @@ class MyHomePage extends StatelessWidget {
                                       context, taskManager.getTask(index));
                                 },
                               ),
-                              const SizedBox(
-                                  width: 8), // Abstand zwischen den Icons
+                              // const SizedBox(width: 4), 
                               IconButton(
                                 icon: const Icon(Icons.delete),
                                 tooltip: 'Delete Task',
@@ -227,6 +223,7 @@ class MyHomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/add-task');
               },
             ),
+            const SizedBox(height: 8), 
           ],
         ),
       ),
