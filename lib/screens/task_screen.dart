@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import '../providers/task_provider.dart';
 import '../widgets/sort_dialog.dart';
-import '../widgets/task_list.dart';
+import '../widgets/task_list_widget.dart';
 
 class MyTaskPage extends StatelessWidget {
   const MyTaskPage({super.key});
@@ -17,7 +15,7 @@ class MyTaskPage extends StatelessWidget {
             showDialog(
               context: context,
               builder: (context) {
-                return SortDialog();
+                return const SortDialog();
               },
             );
           },
@@ -29,7 +27,7 @@ class MyTaskPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Expanded(
-              child: TaskList(),
+              child: TaskListWidget(),
             ),
             const SizedBox(height: 30),
             ElevatedButton(

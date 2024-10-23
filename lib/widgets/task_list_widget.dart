@@ -5,8 +5,8 @@ import '../models/task.dart';
 import '../widgets/details_dialog.dart';
 import '../widgets/infobar_widget.dart';
 
-class TaskList extends StatelessWidget {
-  const TaskList({super.key});
+class TaskListWidget extends StatelessWidget {
+  const TaskListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

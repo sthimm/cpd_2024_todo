@@ -5,8 +5,6 @@ import '../widgets/details_dialog.dart';
 class InfoBarWidget extends StatelessWidget {
   final Task task; 
 
-  
-
   const InfoBarWidget({super.key, required this.task});
 
   @override
