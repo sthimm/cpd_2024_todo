@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/tasklist_provider.dart';
+import '../providers/task_provider.dart';
 import '../widgets/button_widget.dart';
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class MyTaskListPage extends StatelessWidget {
+  const MyTaskListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Consumer<TaskListProvider>(
+        leading: Consumer<TaskProvider>(
           builder: (context, taskManager, child) {
             return IconButton(
               icon: const Icon(Icons.sort),
@@ -86,7 +86,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(child: Consumer<TaskListProvider>(
+            Expanded(child: Consumer<TaskProvider>(
               builder: (context, taskManager, child) {
                 return ListView.separated(
                   separatorBuilder: (context, index) => Divider(
