@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-class MyTaskManager with ChangeNotifier {
+class TaskListProvider with ChangeNotifier {
   final List<Task> _tasks = [];
   List<Task> _sortedTasks = [];
   SortType _sortType = SortType.unsorted;
 
-  MyTaskManager() {
+  TaskListProvider() {
     _loadTasks();
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'models/task_manager.dart';
-import 'models/date_picker.dart'; 
+import 'providers/tasklist_provider.dart';
+import 'providers/date_provider.dart'; 
 import 'screens/home_screen.dart';
 import 'screens/form_screen.dart';
 
@@ -9,7 +9,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => MyTaskManager()),
+        ChangeNotifierProvider(create: (context) => TaskListProvider()),
         ChangeNotifierProvider(create: (context) => MyDatePicker()),
       ],
       child: const ToDoListApp(),

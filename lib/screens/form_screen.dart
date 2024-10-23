@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/task_manager.dart';
-import '../models/date_picker.dart';
+import '../providers/tasklist_provider.dart';
+import '../providers/date_provider.dart';
 import '../widgets/button_widget.dart'; 
 
 class MyFormPage extends StatelessWidget {
@@ -93,7 +93,7 @@ class _MyForm extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center, // Zentriert die Schaltflächen horizontal
               children: [
-                Consumer2<MyTaskManager, MyDatePicker>(
+                Consumer2<TaskListProvider, MyDatePicker>(
                   builder: (context, taskManager, datePicker, child) {
                     return MyElevatedButton(
                       text: 'Save',

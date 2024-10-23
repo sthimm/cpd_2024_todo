@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/task_manager.dart';
+import '../providers/tasklist_provider.dart';
 import '../widgets/button_widget.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -10,7 +10,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Consumer<MyTaskManager>(
+        leading: Consumer<TaskListProvider>(
           builder: (context, taskManager, child) {
             return IconButton(
               icon: const Icon(Icons.sort),
@@ -86,7 +86,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(child: Consumer<MyTaskManager>(
+            Expanded(child: Consumer<TaskListProvider>(
               builder: (context, taskManager, child) {
                 return ListView.separated(
                   separatorBuilder: (context, index) => Divider(
