@@ -1,15 +1,5 @@
 import '../models/task.dart';
-
-enum SortType {
-  byPriority,
-  byDeadline,
-  byStatus,
-}
-
-enum SortDirection {
-  ascending,
-  descending,
-}
+import '../models/sort.dart';
 
 class TaskRepository {
   final List<Task> tasks = [];
@@ -38,10 +28,14 @@ class TaskRepository {
     _sortTasks(tasks);
   }
 
+  SortType getSortType() => _currentsortType;
+
   void setSortDirection(SortDirection sortDirection) {
     _currentsortDirection = sortDirection;
     _sortTasks(tasks);
   }
+
+  SortDirection getSortDirection() => _currentsortDirection;
 
   void _sortTasks(List<Task> tasks) {
     switch (_currentsortType) {

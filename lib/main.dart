@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
 import 'providers/date_provider.dart'; 
-import 'screens/tasklist_screen.dart';
-import 'screens/form_screen.dart';
+import 'screens/task_screen.dart';
+// import 'screens/form_screen.dart';
 
 void main() {
   runApp(
@@ -30,8 +30,8 @@ class ToDoListApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyTaskListPage(),
-        '/add-task': (context) => const MyFormPage(),
+        '/': (context) => const MyTaskPage(),
+        // '/add-task': (context) => const MyFormPage(),
       },
       debugShowCheckedModeBanner: false,
     );

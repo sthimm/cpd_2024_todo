@@ -43,4 +43,14 @@ class Task {
       status: json['status'], // Korrekte Zuordnung
     );
   }
+
+  Map<String, dynamic> getInfo() {
+    return {
+      'Name': name,
+      'Description': description,
+      'Deadline': deadline.toString().substring(0, 10),
+      'Priority': priority.toString().split('.').last,
+      'Status': status ? 'Closed' : 'Open',
+    };
+  }
 }
