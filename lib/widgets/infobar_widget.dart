@@ -24,7 +24,18 @@ class InfoBarWidget extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.info), 
           tooltip: 'Task Info', 
-          onPressed: () => DetailsDialog(task: task), 
+          // onPressed: () => DetailsDialog(task: task), 
+          onPressed: () => showDialog(
+            context: context, 
+            builder: (context) {
+              showDialog(
+                context: context, 
+                builder: (context) {
+                  return DetailsDialog(task: task);
+                },
+              );
+            },
+          ),
         ),
       ],
     ); 

@@ -7,6 +7,9 @@ import '../models/task.dart';
 
 class MyFormPage extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
+  final TextEditingController _taskNameController = TextEditingController();
+  final TextEditingController _taskDescriptionController = TextEditingController();
+  final TextEditingController _taskDeadlineController = TextEditingController();
 
   MyFormPage({super.key});
 
@@ -14,6 +17,10 @@ class MyFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     final formProvider = Provider.of<FormProvider>(context);
+
+    _taskNameController.text = formProvider.taskName;
+    _taskDescriptionController.text = formProvider.taskDescription;
+    _taskDeadlineController.text = formProvider.taskDeadline.toString().substring(0, 10);
 
     return Scaffold(
       body: Padding(
@@ -24,9 +31,7 @@ class MyFormPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
-                controller: TextEditingController(text: formProvider.taskName)
-                  ..selection = TextSelection.fromPosition(
-                      TextPosition(offset: formProvider.taskName.length)),
+                controller: _taskNameController,
                 decoration: const InputDecoration(
                   labelText: 'Name',
                   hintText: 'Enter a task name',
@@ -42,9 +47,7 @@ class MyFormPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               TextFormField(
-                controller: TextEditingController(text: formProvider.taskDescription)
-                  ..selection = TextSelection.fromPosition(
-                      TextPosition(offset: formProvider.taskDescription.length)),
+                controller: _taskDescriptionController,
                 decoration: const InputDecoration(
                   labelText: 'Description',
                   hintText: 'Enter a task description',
@@ -60,6 +63,9 @@ class MyFormPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               DropdownButtonFormField<TaskPriority>(
+                decoration: const InputDecoration(
+                  labelText: 'Priority',
+                ),
                 value: formProvider.taskPriority,
                 onChanged: (TaskPriority? value) {
                   if (value != null) {
@@ -75,9 +81,10 @@ class MyFormPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Deadline: ${formProvider.taskDeadline.toLocal()}'.split(' ')[0],
-                  suffixIcon: const Icon(Icons.calendar_today),
+                controller: _taskDeadlineController,
+                decoration: const InputDecoration(
+                  labelText: 'Deadline',
+                  suffixIcon: Icon(Icons.calendar_today),
                 ),
                 readOnly: true,
                 onTap: () => _showDatePicker(context, formProvider),
@@ -124,7 +131,10 @@ class MyFormPage extends StatelessWidget {
                 children: [
                   CupertinoButton(
                     child: const Text('Confirm'),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      _taskDeadlineController.text = formProvider.taskDeadline.toString().substring(0, 10);
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),

@@ -7,6 +7,7 @@ class TaskRepository {
   SortDirection _currentsortDirection = SortDirection.ascending;
 
   void addTask(Task task) {
+    print('Adding task');
     tasks.add(task);
     _sortTasks(tasks); 
   }
