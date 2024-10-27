@@ -2,173 +2,146 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/task_provider.dart';
-import '../providers/date_provider.dart';
-import '../widgets/button_widget.dart'; 
+import '../providers/form_provider.dart';
+import '../models/task.dart';
 
 class MyFormPage extends StatelessWidget {
-  const MyFormPage({super.key});
+  final _formkey = GlobalKey<FormState>();
+
+  MyFormPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+    final formProvider = Provider.of<FormProvider>(context);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(32.0),
-        child: _MyForm(),
-      ),
-    );
-  }
-}
-
-class _MyForm extends StatelessWidget {
-  final _formkey = GlobalKey<FormState>();
-  final TextEditingController _taskNameController = TextEditingController();
-  final TextEditingController _taskDescriptionController = TextEditingController();
-  final TextEditingController _taskDeadlineController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    TaskPriority taskPriority = TaskPriority.low;
-    return Form(
-      key: _formkey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextFormField(
-            controller: _taskNameController,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              hintText: 'Enter a task name',
-            ),
-            validator: (String? value) {
-              return (value == null || value.trim().isEmpty)
-                  ? 'Please enter a task name'
-                  : null;
-            },
-          ),
-          const SizedBox(height: 30),
-          TextFormField(
-            controller: _taskDescriptionController,
-            decoration: const InputDecoration(
-              labelText: 'Description',
-              hintText: 'Enter a task description',
-            ),
-            validator: (String? value) {
-              return (value == null || value.trim().isEmpty)
-                  ? 'Please enter a task description'
-                  : null;
-            },
-          ),
-          const SizedBox(height: 30),
-          DropdownButtonFormField(
-            decoration: const InputDecoration(
-              labelText: 'Priority',
-            ),
-            items: TaskPriority.values.map((TaskPriority priority) {
-              return DropdownMenuItem<TaskPriority>(
-              value: priority,
-              child: Text(priority.toString().split('.').last),
-              );
-            }).toList(),
-            onChanged: (TaskPriority? newValue) {
-              taskPriority = newValue!;
-            },
-            validator: (value) {
-              return (value == null) ? 'Please select a priority' : null;
-            },
-          ),
-          const SizedBox(height: 30),
-          TextFormField(
-            controller: _taskDeadlineController,
-            decoration: const InputDecoration(
-              labelText: 'Deadline',
-              suffixIcon: Icon(Icons.calendar_today),
-            ),
-            readOnly: true, 
-            onTap: () {
-              _showDatePicker(context); 
-            }, 
-          ),
-          const SizedBox(height: 30),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Zentriert die Schaltflächen horizontal
-              children: [
-                Consumer2<TaskProvider, MyDatePicker>(
-                  builder: (context, taskManager, datePicker, child) {
-                    return MyElevatedButton(
-                      text: 'Save',
-                      onPressed: () {
-                        if (_formkey.currentState!.validate()) {
-                          _formkey.currentState!.save();
-                          taskManager.addTask(Task(_taskNameController.text, _taskDescriptionController.text, datePicker.selectedDate, taskPriority));
-                          Navigator.pushNamed(context, '/');
-                        }
-                      },
-                    );
-                  },
+        child: Form(
+          key: _formkey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                controller: TextEditingController(text: formProvider.taskName)
+                  ..selection = TextSelection.fromPosition(
+                      TextPosition(offset: formProvider.taskName.length)),
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  hintText: 'Enter a task name',
                 ),
-                const SizedBox(width: 30),
-                MyElevatedButton(
-                  text: 'Cancel',
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                )
-              ],
-            ),
+                validator: (String? value) {
+                  return (value == null || value.trim().isEmpty)
+                      ? 'Please enter a task name'
+                      : null;
+                },
+                onChanged: (value) {
+                  formProvider.setTaskName(value);
+                },
+              ),
+              const SizedBox(height: 30),
+              TextFormField(
+                controller: TextEditingController(text: formProvider.taskDescription)
+                  ..selection = TextSelection.fromPosition(
+                      TextPosition(offset: formProvider.taskDescription.length)),
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                  hintText: 'Enter a task description',
+                ),
+                validator: (String? value) {
+                  return (value == null || value.trim().isEmpty)
+                      ? 'Please enter a task description'
+                      : null;
+                },
+                onChanged: (value) {
+                  formProvider.setTaskDescription(value);
+                },
+              ),
+              const SizedBox(height: 30),
+              DropdownButtonFormField<TaskPriority>(
+                value: formProvider.taskPriority,
+                onChanged: (TaskPriority? value) {
+                  if (value != null) {
+                    formProvider.setTaskPriority(value);
+                  }
+                },
+                items: TaskPriority.values.map((TaskPriority priority) {
+                  return DropdownMenuItem<TaskPriority>(
+                    value: priority,
+                    child: Text(priority.toString().split('.').last),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 30),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Deadline: ${formProvider.taskDeadline.toLocal()}'.split(' ')[0],
+                  suffixIcon: const Icon(Icons.calendar_today),
+                ),
+                readOnly: true,
+                onTap: () => _showDatePicker(context, formProvider),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formkey.currentState!.validate()) {
+                    taskProvider.addTask(
+                      Task(
+                        name: formProvider.taskName,
+                        description: formProvider.taskDescription,
+                        deadline: formProvider.taskDeadline,
+                        priority: formProvider.taskPriority,
+                      ),
+                    );
+
+                    formProvider.setTaskName('');
+                    formProvider.setTaskDescription('');
+
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Add Task'),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  void _showDatePicker(BuildContext context) {
+  void _showDatePicker(BuildContext context, FormProvider formProvider) {
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
-        return Consumer<MyDatePicker>(
-          builder: (context, datePicker, child) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CupertinoButton(
-                        child: const Text('Cancel'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      CupertinoButton(
-                        child: const Text('Done'),
-                        onPressed: () {
-                          _taskDeadlineController.text = datePicker.selectedDate.toString().substring(0, 10);
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CupertinoButton(
+                    child: const Text('Confirm'),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                ),
-                SizedBox(
-                  height: 200,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: datePicker.selectedDate,
-                    onDateTimeChanged: (DateTime newDate) {
-                      datePicker.selectDate(newDate);
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
-        ); 
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 200,
+              child: CupertinoDatePicker(
+                initialDateTime: formProvider.taskDeadline,
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (DateTime newDate) {
+                  formProvider.setTaskDeadline(newDate);
+                },
+              ),
+            ),
+          ],
+        );
       },
-    ); 
+    );
   }
-
 }
-

@@ -32,7 +32,7 @@ class MyTaskPage extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/add_task');
+                Navigator.pushNamed(context, '/add-task');
               },
               child: const Text('Add Task'),
             ),
