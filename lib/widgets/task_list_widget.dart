@@ -40,7 +40,7 @@ class TaskListWidget extends StatelessWidget {
                 onDoubleTap: () => DetailsDialog(task: taskProvider.getTask(index)),
                 child: ListTile(
                   title: Text(taskProvider.getTask(index).name),
-                  subtitle: Text(taskProvider.getTask(index).deadline.toString()),
+                  subtitle: Text(taskProvider.getTask(index).deadline.toString().substring(0, 10)),
                   leading: Checkbox(
                     value: taskProvider.getTask(index).status,
                     onChanged: (value) => taskProvider.toggleTask(index),

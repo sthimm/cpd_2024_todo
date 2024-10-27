@@ -28,4 +28,12 @@ class FormProvider with ChangeNotifier {
   void setTaskDeadline(DateTime taskDeadline) {
     _taskDeadline = taskDeadline;
   }
+
+  void resetForm() {
+    _taskName = '';
+    _taskDescription = '';
+    _taskPriority = TaskPriority.low;
+    _taskDeadline = DateTime.now();
+    notifyListeners(); 
+  }
 }

@@ -28,12 +28,7 @@ class InfoBarWidget extends StatelessWidget {
           onPressed: () => showDialog(
             context: context, 
             builder: (context) {
-              showDialog(
-                context: context, 
-                builder: (context) {
-                  return DetailsDialog(task: task);
-                },
-              );
+              return DetailsDialog(task: task);
             },
           ),
         ),

@@ -8,7 +8,8 @@ import '../models/task.dart';
 class MyFormPage extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
   final TextEditingController _taskNameController = TextEditingController();
-  final TextEditingController _taskDescriptionController = TextEditingController();
+  final TextEditingController _taskDescriptionController =
+      TextEditingController();
   final TextEditingController _taskDeadlineController = TextEditingController();
 
   MyFormPage({super.key});
@@ -20,7 +21,8 @@ class MyFormPage extends StatelessWidget {
 
     _taskNameController.text = formProvider.taskName;
     _taskDescriptionController.text = formProvider.taskDescription;
-    _taskDeadlineController.text = formProvider.taskDeadline.toString().substring(0, 10);
+    _taskDeadlineController.text =
+        formProvider.taskDeadline.toString().substring(0, 10);
 
     return Scaffold(
       body: Padding(
@@ -90,25 +92,36 @@ class MyFormPage extends StatelessWidget {
                 onTap: () => _showDatePicker(context, formProvider),
               ),
               const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formkey.currentState!.validate()) {
-                    taskProvider.addTask(
-                      Task(
-                        name: formProvider.taskName,
-                        description: formProvider.taskDescription,
-                        deadline: formProvider.taskDeadline,
-                        priority: formProvider.taskPriority,
-                      ),
-                    );
-
-                    formProvider.setTaskName('');
-                    formProvider.setTaskDescription('');
-
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text('Add Task'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      formProvider.resetForm();
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.cancel),
+                    label: const Text('Cancel'),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      if (_formkey.currentState!.validate()) {
+                        taskProvider.addTask(
+                          Task(
+                            name: formProvider.taskName,
+                            description: formProvider.taskDescription,
+                            deadline: formProvider.taskDeadline,
+                            priority: formProvider.taskPriority,
+                          ),
+                        );
+                        formProvider.resetForm();
+                        Navigator.pop(context);
+                      }
+                    },
+                    icon: const Icon(Icons.save),
+                    label: const Text('Save'),
+                  ),
+                ],
               ),
             ],
           ),
@@ -118,21 +131,29 @@ class MyFormPage extends StatelessWidget {
   }
 
   void _showDatePicker(BuildContext context, FormProvider formProvider) {
-    showCupertinoModalPopup(
+    showModalBottomSheet(
       context: context,
       builder: (context) {
         return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min, // Minimale Höhe für den Dialog
           children: [
             Container(
               color: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CupertinoButton(
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  CupertinoButton(
                     child: const Text('Confirm'),
                     onPressed: () {
-                      _taskDeadlineController.text = formProvider.taskDeadline.toString().substring(0, 10);
+                      _taskDeadlineController.text =
+                          formProvider.taskDeadline.toString().substring(0, 10);
                       Navigator.pop(context);
                     },
                   ),
