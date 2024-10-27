@@ -3,8 +3,3 @@ enum SortType {
   byDeadline,
   byStatus,
 }
-
-enum SortDirection {
-  ascending,
-  descending,
-}

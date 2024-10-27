@@ -36,14 +36,22 @@ class TaskListWidget extends StatelessWidget {
                 child: const Icon(Icons.delete, color: Colors.white),
               ),
               child: GestureDetector(
-                onTap: () => taskProvider.toggleTask(index),
-                onDoubleTap: () => DetailsDialog(task: taskProvider.getTask(index)),
+                // onTap: () => taskProvider.toggleTask(index),
+                onDoubleTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => DetailsDialog(task: taskProvider.getTask(index)),
+                  );
+                },
                 child: ListTile(
                   title: Text(taskProvider.getTask(index).name),
                   subtitle: Text(taskProvider.getTask(index).deadline.toString().substring(0, 10)),
                   leading: Checkbox(
                     value: taskProvider.getTask(index).status,
-                    onChanged: (value) => taskProvider.toggleTask(index),
+                    onChanged: (value) {
+                      taskProvider.toggleTask(index);
+                      taskProvider.sortTasks(); 
+                    },
                   ),
                   trailing: InfoBarWidget(task: taskProvider.getTask(index)),
                 ),

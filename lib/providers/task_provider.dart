@@ -39,12 +39,8 @@ class TaskProvider with ChangeNotifier {
     return _taskRepository.getSortType();
   }
 
-  void setSortDirection(SortDirection sortDirection) {
-    _taskRepository.setSortDirection(sortDirection);
+  void sortTasks() {
+    _taskRepository.sortTasks();
     notifyListeners();
-  }
-
-  SortDirection getSortDirection() {
-    return _taskRepository.getSortDirection();
   }
 }

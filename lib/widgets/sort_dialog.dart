@@ -16,32 +16,19 @@ class SortDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text('By Priority'),
+                title: const Text('Priority'),
                 selected: taskProvider.getSortType() == SortType.byPriority,
                 onTap: () => taskProvider.setSortType(SortType.byPriority),
               ),
               ListTile(
-                title: const Text('By Deadline'),
+                title: const Text('Deadline'),
                 selected: taskProvider.getSortType() == SortType.byDeadline,
                 onTap: () => taskProvider.setSortType(SortType.byDeadline),
               ),
               ListTile(
-                title: const Text('By Status'),
+                title: const Text('Status'),
                 selected: taskProvider.getSortType() == SortType.byStatus,
                 onTap: () => taskProvider.setSortType(SortType.byStatus),
-              ),
-              const Divider(),
-              ListTile(
-                title: const Text('Ascending'),
-                selected: taskProvider.getSortDirection() == SortDirection.ascending,
-                onTap: () =>
-                    taskProvider.setSortDirection(SortDirection.ascending),
-              ),
-              ListTile(
-                title: const Text('Descending'),
-                selected: taskProvider.getSortDirection() == SortDirection.descending,
-                onTap: () =>
-                    taskProvider.setSortDirection(SortDirection.descending),
               ),
             ],
           );
