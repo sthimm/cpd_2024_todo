@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
 import 'providers/form_provider.dart';
+import 'repositories/task_repository.dart';
 import 'screens/task_screen.dart';
 import 'screens/form_screen.dart';
 
@@ -9,7 +10,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => TaskProvider()),
+        ChangeNotifierProvider(create: (context) => TaskProvider(TaskRepository())),
         ChangeNotifierProvider(create: (context) => FormProvider()),
       ],
       child: const ToDoListApp(),

@@ -4,7 +4,16 @@ import '../models/task.dart';
 import '../models/sort.dart';
 
 class TaskProvider with ChangeNotifier {
-  final TaskRepository _taskRepository = TaskRepository();
+  final TaskRepository _taskRepository;  
+
+  TaskProvider(this._taskRepository){
+    _initalize(); 
+  }
+
+  Future<void> _initalize() async {
+    await _taskRepository.loadData();
+    notifyListeners();
+  }
 
   void addTask(Task task) {
     _taskRepository.addTask(task);

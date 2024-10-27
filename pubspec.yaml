@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   provider: ^6.1.2
   shared_preferences: ^2.0.0
+  sqlite3: ^2.4.7
+  postgres: ^3.4.0
 
 dev_dependencies:
   flutter_test:
