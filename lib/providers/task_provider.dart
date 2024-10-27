@@ -4,7 +4,7 @@ import '../models/task.dart';
 import '../models/sort.dart';
 
 class TaskProvider with ChangeNotifier {
-  final TaskRepository _taskRepository;  
+  TaskRepository _taskRepository;  
 
   TaskProvider(this._taskRepository){
     _initalize(); 

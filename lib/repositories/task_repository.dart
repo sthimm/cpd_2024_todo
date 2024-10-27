@@ -21,7 +21,7 @@ class TaskRepository {
   Task removeTask(int index) {
     Task removedTask = tasks.removeAt(index);
     saveData();
-    return removedTask;
+    return removedTask; 
   }
 
   Task getTask(int index) => tasks[index];
@@ -56,6 +56,7 @@ class TaskRepository {
   }
 
   Future<void> loadData() async {
+    tasks.clear();
     final prefs = await SharedPreferences.getInstance();
     List<String>? jsonTasks = prefs.getStringList('tasks');
     if (jsonTasks == null) return;

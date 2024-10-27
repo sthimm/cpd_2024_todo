@@ -5,6 +5,7 @@ enum TaskPriority {
 }
 
 class Task {
+  final int? id; // Optional 
   final String name;
   final String description;
   final DateTime deadline;
@@ -12,6 +13,7 @@ class Task {
   bool status;
 
   Task({
+    this.id,
     required this.name,
     required this.description,
     required this.deadline,
