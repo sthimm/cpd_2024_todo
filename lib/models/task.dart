@@ -33,8 +33,8 @@ class Task {
       'name': name,
       'description': description,
       'deadline': deadline.toIso8601String(),
-      'priority': priority.toString().split('.').last,
-      'status': status,
+      'priority': priority.index, // Verwenden des Index für die Datenbank
+      'status': status ? 1 : 0, // Integrierte Booleans
     };
   }
 
@@ -44,9 +44,8 @@ class Task {
       name: json['name'],
       description: json['description'],
       deadline: DateTime.parse(json['deadline']),
-      priority: TaskPriority.values.firstWhere(
-          (e) => e.toString() == 'TaskPriority.${json['priority']}'),
-      status: json['status'], // Korrekte Zuordnung
+      priority: TaskPriority.values[json['priority']], // Zugriff über Index
+      status: json['status'] == 1, // Boolean Zustand aus int ableiten
     );
   }
 

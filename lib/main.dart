@@ -3,17 +3,20 @@ import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
 import 'providers/form_provider.dart';
 import 'repositories/task_repository_sharedpref.dart';
-import 'repositories/task_repository_sqlite.dart';
+import 'repositories/task_repository_sqlite3.dart';
 import 'repositories/task_repository_securestorage.dart';
+import 'repositories/task_repository_sqflite.dart';
 import 'repositories/task_repository.dart';
 import 'screens/task_screen.dart';
 import 'screens/form_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // TaskRepository taskRepository = TaskRepositorySqlite();
+  TaskRepository taskRepository = TaskRepositorySqlite3();
+  // TaskRepository taskRepository = TaskRepositorySqflite();
   // TaskRepository taskRepository = TaskRepositorySharedPref();
-  TaskRepository taskRepository = TaskRepositorySecureStorage();
+  // TaskRepository taskRepository = TaskRepositorySecureStorage();
 
   runApp(
     MultiProvider(
