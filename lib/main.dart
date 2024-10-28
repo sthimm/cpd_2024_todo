@@ -12,8 +12,8 @@ import 'screens/form_screen.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  TaskRepository taskRepository = TaskRepositorySqlite3();
-    // TaskRepository taskRepository = TaskRepositorySharedPref();
+  // TaskRepository taskRepository = TaskRepositorySqlite3(); 
+    TaskRepository taskRepository = TaskRepositorySharedPref();
   // TaskRepository taskRepository = TaskRepositorySecureStorage();
 
   runApp(

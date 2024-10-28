@@ -66,6 +66,7 @@ class TaskRepositorySqlite3 implements TaskRepository {
     await _dbLock.future; // Wait for the database to be initialized
     try {
       final result = _db.select('SELECT * FROM tasks');
+      print("Read tasks: ${result.length}");
       return result.map((row) {
         return Task(
           id: row['id'] as String,
@@ -76,7 +77,6 @@ class TaskRepositorySqlite3 implements TaskRepository {
           status: (row['status'] as int) == 1,
         );
       }).toList();
-      print("Read tasks: ${result.length}");
     } catch (e) {
       print("Error reading tasks: $e");
       return [];
