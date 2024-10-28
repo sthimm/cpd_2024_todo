@@ -4,52 +4,65 @@ import '../models/task.dart';
 import '../models/sort.dart';
 
 class TaskProvider with ChangeNotifier {
-  TaskRepository _taskRepository;  
+  final TaskRepository _taskRepository;  
+  List<Task> tasks = [];
+  SortType _currentsortType = SortType.byPriority;
 
-  TaskProvider(this._taskRepository){
-    _initalize(); 
+  TaskProvider(this._taskRepository); 
+
+  List<Task> getTasks() => List<Task>.from(tasks);
+  Task getTask(int index) => tasks[index];
+
+  Future<void> loadTasks() async {
+    tasks = await _taskRepository.readTasks();
+    sortTasks();
+    notifyListeners(); 
   }
 
-  Future<void> _initalize() async {
-    await _taskRepository.loadData();
+  Future<void> addTask(Task task) async {
+    print(task.id); 
+    tasks.add(task);
+    await _taskRepository.createTask(task);
+    sortTasks(); 
     notifyListeners();
   }
 
-  void addTask(Task task) {
-    _taskRepository.addTask(task);
+  Future<void> toggleTask(int index) async {
+    final task = tasks[index]; 
+    task.toggleStatus();
+    await _taskRepository.updateTask(task);
+    if (_currentsortType == SortType.byStatus) {
+      sortTasks();
+    }
     notifyListeners();
   }
 
-  void toggleTask(int index) {
-    _taskRepository.toggleTask(index);
+  Future<void> removeTask(int index) async {
+    Task removedTask = tasks.removeAt(index);
+    await _taskRepository.deleteTask(removedTask);
     notifyListeners();
-  }
-
-  Task removeTask(int index) {
-    Task removedTask = _taskRepository.removeTask(index);
-    notifyListeners();
-    return removedTask;
-  }
-
-  Task getTask(int index) {
-    return _taskRepository.getTask(index);
-  }
-
-  List<Task> getTasks() {
-    return _taskRepository.getTasks();
   }
 
   void setSortType(SortType sortType) {
-    _taskRepository.setSortType(sortType);
+    _currentsortType = sortType;
+    sortTasks(); 
     notifyListeners();
   }
 
-  SortType getSortType() {
-    return _taskRepository.getSortType();
-  }
+  SortType getSortType() => _currentsortType;
 
   void sortTasks() {
-    _taskRepository.sortTasks();
+    switch (_currentsortType) {
+      case SortType.byPriority:
+        tasks.sort((a, b) => b.priority.index.compareTo(a.priority.index));
+        break;
+      case SortType.byDeadline:
+        tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
+        break;
+      case SortType.byStatus:
+        tasks.sort((a, b) => a.status ? -1 : 1);
+        break;
+    }
     notifyListeners();
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/task_provider.dart';
-import '../models/task.dart';
 import '../widgets/details_dialog.dart';
 import '../widgets/infobar_widget.dart';
 
@@ -18,10 +17,11 @@ class TaskListWidget extends StatelessWidget {
           ),
           itemCount: taskProvider.getTasks().length,
           itemBuilder: (context, index) {
+            final task = taskProvider.getTask(index);
             return Dismissible(
-              key: Key(taskProvider.getTask(index).name),
-              onDismissed: (direction) {
-                Task task = taskProvider.removeTask(index);
+              key: Key(task.name),
+              onDismissed: (direction) async {
+                taskProvider.removeTask(index);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('${task.name} deleted'),
@@ -40,20 +40,20 @@ class TaskListWidget extends StatelessWidget {
                 onDoubleTap: () {
                   showDialog(
                     context: context,
-                    builder: (context) => DetailsDialog(task: taskProvider.getTask(index)),
+                    builder: (context) => DetailsDialog(task: task),
                   );
                 },
                 child: ListTile(
-                  title: Text(taskProvider.getTask(index).name),
-                  subtitle: Text(taskProvider.getTask(index).deadline.toString().substring(0, 10)),
+                  title: Text(task.name),
+                  subtitle: Text("due ${task.deadline.toString().substring(0, 10)}"),
                   leading: Checkbox(
-                    value: taskProvider.getTask(index).status,
+                    value: task.status,
                     onChanged: (value) {
                       taskProvider.toggleTask(index);
                       taskProvider.sortTasks(); 
                     },
                   ),
-                  trailing: InfoBarWidget(task: taskProvider.getTask(index)),
+                  trailing: InfoBarWidget(task: task),
                 ),
               ),
             );

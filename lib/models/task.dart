@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 enum TaskPriority {
   low,
   medium,
@@ -5,7 +7,7 @@ enum TaskPriority {
 }
 
 class Task {
-  final int? id; // Optional 
+  final String id; // Optional
   final String name;
   final String description;
   final DateTime deadline;
@@ -13,13 +15,13 @@ class Task {
   bool status;
 
   Task({
-    this.id,
+    String? id,
     required this.name,
     required this.description,
     required this.deadline,
-    required this.priority, 
-    this.status = false, 
-  });
+    required this.priority,
+    this.status = false,
+  }) : id = id ?? const Uuid().v4();
 
   void toggleStatus() {
     status = !status;
@@ -27,6 +29,7 @@ class Task {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       'description': description,
       'deadline': deadline.toIso8601String(),
@@ -37,6 +40,7 @@ class Task {
 
   static Task fromJson(Map<String, dynamic> json) {
     return Task(
+      id: json['id'],
       name: json['name'],
       description: json['description'],
       deadline: DateTime.parse(json['deadline']),
