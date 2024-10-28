@@ -20,7 +20,6 @@ class TaskProvider with ChangeNotifier {
   }
 
   Future<void> addTask(Task task) async {
-    print(task.id); 
     tasks.add(task);
     await _taskRepository.createTask(task);
     sortTasks(); 
@@ -60,7 +59,7 @@ class TaskProvider with ChangeNotifier {
         tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
         break;
       case SortType.byStatus:
-        tasks.sort((a, b) => a.status ? -1 : 1);
+        tasks.sort((a, b) => a.status ? 1 : -1);
         break;
     }
     notifyListeners();
