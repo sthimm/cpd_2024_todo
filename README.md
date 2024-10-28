@@ -22,3 +22,7 @@ Anforderungen:
 * Verwendung Pakete: 
     * State Management mit Provider X
     * Persistenz mit Shared_Preferences X
+
+* Erweiterung 2 lokale Speicherarten (Aufgabe 4): 
+    * Secure Storage X 
+    * Sqlite3 X 
